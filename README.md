@@ -1,4 +1,4 @@
-# Design system (working name)
+# Design system (`@kyzarky/ui`)
 
 A shared design system for Ky Merritt's apps, published as a versioned package that each
 app depends on (Ky, 2026-10-07). First consumer: Fluent Prior. Next: Merritt's Mini Mind.
@@ -20,13 +20,11 @@ app depends on (Ky, 2026-10-07). First consumer: Fluent Prior. Next: Merritt's M
   `../merritts-mini-mind/apps/web/src/index.css`.
 - **Vercel builds both apps,** so installing the package must work there.
 
-## Open decisions for Ky
+## Decisions
 
-1. **Names:** the repo, and the package name and npm scope.
-2. **Registry:** public npm (needs Ky's own npm account, and doubles as a public portfolio
-   piece) or GitHub Packages (private, but every consumer's build needs a token, Vercel's
-   included).
-3. **What ships:** tokens only (a Tailwind v4 CSS file), or tokens plus React components.
+- **[ADR 0001](docs/decisions/0001-name-registry-and-contents.md), accepted:** the package
+  is `@kyzarky/ui`, published to public npm from this repo, with tokens and React
+  components.
 
 ## Proposed first scope
 
