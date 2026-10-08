@@ -1,0 +1,60 @@
+/* The design tokens and the Tailwind utilities that use them (ADR 0002). An app imports
+   this after Tailwind:
+
+     @import "tailwindcss";
+     @import "@kyzarky/ui/theme.css";
+
+   Each token holds a light and a dark value. light-dark() picks one from the color-scheme
+   of the element using it, so the page follows the system unless the app sets
+   color-scheme itself. Components use the utilities (bg-card, text-muted-foreground) and
+   never Tailwind's dark: variant. */
+
+/* In the base layer, so an app's own unlayered rules win wherever it puts them. That's
+   how an app themes the package: by redefining a token. */
+@layer base {
+  :root {
+    color-scheme: light dark;
+
+    --background: light-dark(#f6f4ef, #15181a);
+    --foreground: light-dark(#1f2326, #eceae4);
+    --card: light-dark(#ffffff, #1e2225);
+    --card-foreground: var(--foreground);
+    /* Subtle fills: meter tracks, inset boxes, the unselected segment. */
+    --muted: light-dark(#efece4, #272c30);
+    --muted-foreground: light-dark(#5b6166, #a3a9ad);
+    /* Decorative edges: cards and dividers. Too faint for a control's edge. */
+    --border: light-dark(#dedad0, #353b40);
+    /* Edges of form controls: at least 3:1 on card and background (WCAG 1.4.11). */
+    --input: light-dark(#858279, #737779);
+    --primary: light-dark(#1d6b73, #5fb3ba);
+    --primary-foreground: light-dark(#ffffff, #0e1a1c);
+    --ring: var(--primary);
+    --success: light-dark(#2a7548, #6cc38f);
+    --warning: light-dark(#915d00, #e0a846);
+    --destructive: light-dark(#b1352b, #ef8a7f);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
+
+/* inline: each utility reads the token where it's used, not a copy resolved at :root, so
+   an element that redefines a token gets its own value. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+}
