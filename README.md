@@ -25,15 +25,8 @@ app depends on (Ky, 2026-10-07). First consumer: Fluent Prior. Next: Merritt's M
 - **[ADR 0001](docs/decisions/0001-name-registry-and-contents.md), accepted:** the package
   is `@kyzarky/ui`, published to public npm from this repo, with tokens and React
   components.
-
-## Proposed first scope
-
-- **Tokens:** color (light and dark), type scale, spacing scale, radius, shadow.
-- **Components Fluent Prior needs now:** card, section, list row with dividers, meter,
-  segmented control, button.
-- **Extracted from the two apps' existing styles,** not invented from scratch.
-- **First deliverable:** an audit of both apps' styles and a short plan (an ADR) for Ky to
-  approve before any code.
+- **[ADR 0002](docs/decisions/0002-first-scope.md), proposed:** the first scope, based on
+  a [style audit](docs/audit/README.md) of both apps.
 
 ## How we work
 
