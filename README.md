@@ -112,6 +112,23 @@ table above.
 | `npm test` | The contrast tests, and a Tailwind build of the theme |
 | `npm run format` | Biome: format and apply safe lint fixes |
 
+## Releasing
+
+1. In a pull request: bump `version` in `package.json` and add a changelog entry.
+2. Try it in an app before merging: `npm pack`, then in the app
+   `npm install --no-save <path to the .tgz>` and its `npm run verify`.
+3. After merging, tag the merge commit and push the tag:
+   `git tag v0.2.0 && git push origin v0.2.0`. The publish workflow checks that the tag
+   matches `package.json`, runs `verify`, and publishes with provenance.
+
+**The first version is published by hand,** because trusted publishing is set up in the
+settings of a package that already exists. Ky, from a clean checkout of the tag: `npm publish`, with the
+two-factor code. Then on npmjs.com, in the package's settings, add a trusted publisher
+(GitHub Actions, `KyzarKy/design-system`, workflow `publish.yml`), and set publishing
+access to require two-factor auth and disallow tokens. Pushing the tag afterwards is safe:
+the workflow skips a version that's already on npm. 0.1.0 has no provenance for this
+reason; later versions do.
+
 ## How we work
 
 Ky decides; Claude proposes and implements. Docs first: decisions go in ADRs before code.

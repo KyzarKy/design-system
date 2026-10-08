@@ -1,0 +1,38 @@
+# Publishes to npm when a version tag (v0.1.0) is pushed, through npm trusted publishing
+# (ADR 0001): the job proves who it is with GitHub's OIDC token, so no npm token is stored
+# anywhere, and npm attaches provenance. The package's settings on npmjs.com name this
+# file, so renaming it stops publishing until the setting changes too.
+name: Publish
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Trusted publishing needs npm 11.5.1 or later. Current Node 24 releases ship npm 11.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run verify
+      - name: Check the tag matches package.json
+        run: test "$GITHUB_REF_NAME" = "v$(node -p 'require("./package.json").version')"
+      # A version can be published only once. Skipping one that's already there keeps a
+      # re-run, or the tag for a version published by hand, from failing.
+      - name: Publish
+        run: |
+          version=$(node -p 'require("./package.json").version')
+          if npm view "@kyzarky/ui@$version" version > /dev/null 2>&1; then
+            echo "@kyzarky/ui@$version is already on npm"
+          else
+            npm publish
+          fi
