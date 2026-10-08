@@ -25,7 +25,7 @@ app depends on (Ky, 2026-10-07). First consumer: Fluent Prior. Next: Merritt's M
 - **[ADR 0001](docs/decisions/0001-name-registry-and-contents.md), accepted:** the package
   is `@kyzarky/ui`, published to public npm from this repo, with tokens and React
   components.
-- **[ADR 0002](docs/decisions/0002-first-scope.md), proposed:** the first scope, based on
+- **[ADR 0002](docs/decisions/0002-first-scope.md), accepted:** the first scope, based on
   a [style audit](docs/audit/README.md) of both apps.
 
 ## How we work

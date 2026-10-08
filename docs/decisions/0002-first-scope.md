@@ -1,6 +1,6 @@
 # 0002. First scope: shared token names, light-dark() theming, and a list row
 
-**Status:** proposed, 2026-10-07. No code until Ky approves it.
+**Status:** accepted, 2026-10-07 (Ky; proposed the same day).
 
 ## Context
 
@@ -184,7 +184,7 @@ reviewed in its pull request.
   arrives, Fluent Prior is the showcase, and screenshots in pull requests are the visual
   review.
 
-## For Ky to decide
+## Ky's calls (all accepted as proposed, 2026-10-07)
 
 1. shadcn's names, and the Fluent Prior rename that comes with them.
 2. `light-dark()`, and Safari 17.5 as the oldest supported version.
