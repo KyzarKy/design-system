@@ -1,6 +1,8 @@
 # 0002. First scope: shared token names, light-dark() theming, and a list row
 
-**Status:** accepted, 2026-10-07 (Ky; proposed the same day).
+**Status:** accepted, 2026-10-07 (Ky; proposed the same day). Amended by
+[ADR 0003](0003-light-fallback-and-browser-check.md): older browsers get a light fallback,
+and the browser check in section 2 runs in CI.
 
 ## Context
 
@@ -83,7 +85,7 @@ Options:
 `light-dark()` raises the oldest supported Safari from 16.4 to 17.5. On an older browser
 every token is invalid, so by CSS's rules each color falls back to the browser's default:
 black text on a white page, readable but unstyled. That follows from the spec; it isn't
-tested.
+tested. (Tested since, and it's worse than this says: ADR 0003.)
 
 Checked in Chromium 152: `light-dark()` resolves through `var()` and inside `color-mix()`,
 which is how Tailwind draws opacity modifiers such as `bg-success/15`. **Not yet checked

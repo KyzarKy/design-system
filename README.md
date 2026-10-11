@@ -103,6 +103,8 @@ table above.
   components.
 - **[ADR 0002](docs/decisions/0002-first-scope.md), accepted:** the first scope, based on
   a [style audit](docs/audit/README.md) of both apps.
+- **[ADR 0003](docs/decisions/0003-light-fallback-and-browser-check.md), accepted:** a
+  light fallback for browsers without `light-dark()`, and a browser check in CI.
 
 ## Development
 
