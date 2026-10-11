@@ -1,5 +1,5 @@
-/* The design tokens and the Tailwind utilities that use them (ADR 0002). An app imports
-   this after Tailwind:
+/* The design tokens and the Tailwind utilities that use them (ADRs 0002 and 0003). An app
+   imports this after Tailwind:
 
      @import "tailwindcss";
      @import "@kyzarky/ui/theme.css";
@@ -12,26 +12,48 @@
 /* In the base layer, so an app's own unlayered rules win wherever it puts them. That's
    how an app themes the package: by redefining a token. */
 @layer base {
+  /* The light theme, for browsers without light-dark() (Safari before 17.5). Without
+     these, every token is invalid there and each fill it colors disappears (ADR 0003).
+     theme.test.ts checks that each value equals the light value in the block below. */
   :root {
-    color-scheme: light dark;
+    color-scheme: light;
 
-    --background: light-dark(#f6f4ef, #15181a);
-    --foreground: light-dark(#1f2326, #eceae4);
-    --card: light-dark(#ffffff, #1e2225);
+    --background: #f6f4ef;
+    --foreground: #1f2326;
+    --card: #ffffff;
     --card-foreground: var(--foreground);
-    /* Subtle fills: meter tracks, inset boxes, the unselected segment. */
-    --muted: light-dark(#efece4, #272c30);
-    --muted-foreground: light-dark(#5b6166, #a3a9ad);
-    /* Decorative edges: cards and dividers. Too faint for a control's edge. */
-    --border: light-dark(#dedad0, #353b40);
-    /* Edges of form controls: at least 3:1 on card and background (WCAG 1.4.11). */
-    --input: light-dark(#858279, #737779);
-    --primary: light-dark(#1d6b73, #5fb3ba);
-    --primary-foreground: light-dark(#ffffff, #0e1a1c);
+    --muted: #efece4;
+    --muted-foreground: #5b6166;
+    --border: #dedad0;
+    --input: #858279;
+    --primary: #1d6b73;
+    --primary-foreground: #ffffff;
     --ring: var(--primary);
-    --success: light-dark(#2a7548, #6cc38f);
-    --warning: light-dark(#915d00, #e0a846);
-    --destructive: light-dark(#b1352b, #ef8a7f);
+    --success: #2a7548;
+    --warning: #915d00;
+    --destructive: #b1352b;
+  }
+
+  @supports (color: light-dark(#000, #fff)) {
+    :root {
+      color-scheme: light dark;
+
+      --background: light-dark(#f6f4ef, #15181a);
+      --foreground: light-dark(#1f2326, #eceae4);
+      --card: light-dark(#ffffff, #1e2225);
+      /* Subtle fills: meter tracks, inset boxes, the unselected segment. */
+      --muted: light-dark(#efece4, #272c30);
+      --muted-foreground: light-dark(#5b6166, #a3a9ad);
+      /* Decorative edges: cards and dividers. Too faint for a control's edge. */
+      --border: light-dark(#dedad0, #353b40);
+      /* Edges of form controls: at least 3:1 on card and background (WCAG 1.4.11). */
+      --input: light-dark(#858279, #737779);
+      --primary: light-dark(#1d6b73, #5fb3ba);
+      --primary-foreground: light-dark(#ffffff, #0e1a1c);
+      --success: light-dark(#2a7548, #6cc38f);
+      --warning: light-dark(#915d00, #e0a846);
+      --destructive: light-dark(#b1352b, #ef8a7f);
+    }
   }
 
   body {

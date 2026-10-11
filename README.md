@@ -57,8 +57,9 @@ follows the system. To let people choose, set `color-scheme` yourself:
 
 Don't use Tailwind's `dark:` variant: the tokens already change.
 
-- **Browsers:** Safari 17.5, Chrome 123, Firefox 120, or later. In older browsers every
-  token is invalid, so pages fall back to the browser's default colors.
+- **Browsers:** both themes need `light-dark()`: Safari 17.5, Chrome 123, Firefox 120, or
+  later. A browser without it gets the light theme, whatever the system is set to
+  ([ADR 0003](docs/decisions/0003-light-fallback-and-browser-check.md)).
 - **Reading a token in JavaScript** gives the text `light-dark(#f6f4ef, #15181a)`, not a
   color. Read a computed property instead, such as
   `getComputedStyle(document.body).backgroundColor`.
@@ -111,7 +112,7 @@ table above.
 | Command | What it does |
 |---|---|
 | `npm run verify` | Typecheck, lint, and test: what CI runs |
-| `npm test` | The contrast tests, and a Tailwind build of the theme |
+| `npm test` | The contrast and fallback tests, and a Tailwind build of the theme |
 | `npm run format` | Biome: format and apply safe lint fixes |
 
 ## Releasing

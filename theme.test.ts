@@ -1,7 +1,8 @@
-// Checks theme.css two ways (ADR 0002). Every pair of tokens the rules depend on meets
-// WCAG AA in light and dark mode, so a palette change that breaks contrast fails CI. And
+// Checks theme.css three ways (ADRs 0002 and 0003). Every pair of tokens the rules depend
+// on meets WCAG AA in light and dark mode, so a palette change that breaks contrast fails
+// CI. The fallback for browsers without light-dark() is exactly the light theme. And
 // Tailwind, built the way an app's production build runs it, turns every token into
-// utilities that read it, with light-dark() left intact.
+// utilities that read it, with light-dark() and the fallback left intact.
 
 import { readFileSync } from "node:fs";
 import { compile, optimize } from "@tailwindcss/node";
@@ -10,23 +11,34 @@ import { describe, expect, test } from "vitest";
 type Mode = "light" | "dark";
 const MODES: Mode[] = ["light", "dark"];
 
-/** Each token's light and dark colors, read from the :root block in theme.css. */
-function readTokens(css: string): Map<string, Record<Mode, string>> {
-  const root = css.match(/:root \{([^}]*)\}/)?.[1];
-  if (!root) throw new Error("theme.css has no :root block");
+/** The custom properties declared in one rule's body, name to value. */
+function declarations(body = ""): Map<string, string> {
+  const found = body.matchAll(/--([\w-]+):\s*([^;]+);/g);
+  return new Map([...found].map(([, name = "", value = ""]) => [name, value]));
+}
+
+// theme.css has two :root rules: the fallback (plain light values), then the themed one
+// inside @supports (light-dark() pairs).
+const css = readFileSync(new URL("./theme.css", import.meta.url), "utf8");
+const [fallbackRule, themedRule] = [...css.matchAll(/:root \{([^}]*)\}/g)].map((rule) => rule[1]);
+const fallback = declarations(fallbackRule);
+const themed = declarations(themedRule);
+
+/** Each token's light and dark colors. An alias (var(--other)) takes the other token's. */
+function readTokens(): Map<string, Record<Mode, string>> {
   const tokens = new Map<string, Record<Mode, string>>();
-  for (const [, name = "", value = ""] of root.matchAll(/--([\w-]+):\s*([^;]+);/g)) {
-    const pair = value.match(/^light-dark\((#[0-9a-f]{6}), (#[0-9a-f]{6})\)$/);
+  for (const [name, value] of fallback) {
+    const pair = themed.get(name)?.match(/^light-dark\((#[0-9a-f]{6}), (#[0-9a-f]{6})\)$/);
     const alias = tokens.get(value.match(/^var\(--([\w-]+)\)$/)?.[1] ?? "");
     if (pair?.[1] && pair[2]) tokens.set(name, { light: pair[1], dark: pair[2] });
     else if (alias) tokens.set(name, alias);
     // Fail loudly rather than skip a token this reader doesn't understand.
-    else throw new Error(`Can't read --${name}: ${value}`);
+    else throw new Error(`Can't read --${name}: ${value} / ${themed.get(name)}`);
   }
   return tokens;
 }
 
-const tokens = readTokens(readFileSync(new URL("./theme.css", import.meta.url), "utf8"));
+const tokens = readTokens();
 
 function color(token: string, mode: Mode): string {
   const value = tokens.get(token)?.[mode];
@@ -95,6 +107,16 @@ describe("contrast", () => {
   );
 });
 
+describe("fallback", () => {
+  test("every themed token has a fallback, and nothing else is themed", () => {
+    expect([...themed.keys()].filter((name) => !fallback.has(name))).toEqual([]);
+  });
+
+  test.each([...themed.keys()])("--%s falls back to its light value", (name) => {
+    expect(fallback.get(name)).toBe(tokens.get(name)?.light);
+  });
+});
+
 describe("Tailwind", () => {
   // The same compile and optimize steps @tailwindcss/vite runs in an app's production build.
   async function build(candidates: string[]): Promise<string> {
@@ -125,5 +147,13 @@ describe("Tailwind", () => {
     expect(css).toContain("color-scheme: light dark");
     // Lightning CSS may shorten a hex color (#ffffff to #fff), so match any hex.
     expect(css).toMatch(/--success: light-dark\(#[0-9a-f]{3,6}, #[0-9a-f]{3,6}\)/);
+  });
+
+  test("the production build keeps the fallback, ahead of the @supports block", async () => {
+    const css = await build([]);
+    const plain = css.search(/--success: #[0-9a-f]{3,6};/);
+    const guarded = css.search(/@supports[^{]*light-dark/);
+    expect(plain).toBeGreaterThan(-1);
+    expect(guarded).toBeGreaterThan(plain);
   });
 });

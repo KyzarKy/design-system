@@ -9,6 +9,9 @@ that use them. The values are Fluent Prior's palette, with three changes for con
 - `success` and `warning` are darker in light mode, so their `/15` badges reach 4.5:1.
 - `input` is new: the edge of a form control, at 3:1 or more on `card` and `background`.
 
+Both themes need `light-dark()` (Safari 17.5, Chrome 123, Firefox 120, or later). A browser
+without it gets the light theme ([ADR 0003](docs/decisions/0003-light-fallback-and-browser-check.md)).
+
 ### Moving an app's own tokens to this package
 
 Install it, import `theme.css` after Tailwind, and delete the app's own token variables,
