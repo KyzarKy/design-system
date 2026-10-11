@@ -35,3 +35,10 @@ Install it, import `theme.css` after Tailwind, and delete the app's own token va
 after the other, a find-and-replace for one can catch the other's results. Raw variables
 change the same way (`var(--meter)` becomes `var(--primary)`). Give text fields
 `border-input` instead of `border-border`, and focus rings `ring-ring`.
+
+## 0.0.0
+
+A placeholder with no theme in it, published by hand so the package existed and npm
+trusted publishing could be set up
+([ADR 0001](docs/decisions/0001-name-registry-and-contents.md)). Deprecated: use 0.1.0 or
+later.

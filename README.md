@@ -123,15 +123,21 @@ table above.
    `npm install --no-save <path to the .tgz>` and its `npm run verify`.
 3. After merging, tag the merge commit and push the tag:
    `git tag v0.2.0 && git push origin v0.2.0`. The publish workflow checks that the tag
-   matches `package.json`, runs `verify`, and publishes with provenance.
+   matches `package.json`, runs `verify`, and publishes with provenance. It skips a
+   version that's already on npm, so running it again is safe.
 
-**The first version is published by hand,** because trusted publishing is set up in the
-settings of a package that already exists. Ky, from a clean checkout of the tag: `npm publish`, with the
-two-factor code. Then on npmjs.com, in the package's settings, add a trusted publisher
-(GitHub Actions, `KyzarKy/design-system`, workflow `publish.yml`), and set publishing
-access to require two-factor auth and disallow tokens. Pushing the tag afterwards is safe:
-the workflow skips a version that's already on npm. 0.1.0 has no provenance for this
-reason; later versions do.
+**How publishing is set up** ([ADR 0001](docs/decisions/0001-name-registry-and-contents.md)).
+npm adds a trusted publisher only to a package that already exists, and a new one expires
+unless it makes a successful publish within 2 days. So:
+
+1. `0.0.0` is a placeholder with no theme in it, published by hand so the package exists.
+   It's deprecated.
+2. The trusted publisher is added with
+   `npm trust github @kyzarky/ui --file publish.yml --repo KyzarKy/design-system --allow-publish`.
+3. Pushing `v0.1.0` within those 2 days has CI publish the first real version, which
+   confirms the setup. A replacement trusted publisher would have the same 2 days.
+4. Then publishing access is set to require two-factor auth and disallow tokens, in the
+   package's settings on npmjs.com.
 
 ## How we work
 

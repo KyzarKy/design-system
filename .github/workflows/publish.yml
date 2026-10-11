@@ -27,7 +27,7 @@ jobs:
       - name: Check the tag matches package.json
         run: test "$GITHUB_REF_NAME" = "v$(node -p 'require("./package.json").version')"
       # A version can be published only once. Skipping one that's already there keeps a
-      # re-run, or the tag for a version published by hand, from failing.
+      # re-run from failing.
       - name: Publish
         run: |
           version=$(node -p 'require("./package.json").version')
