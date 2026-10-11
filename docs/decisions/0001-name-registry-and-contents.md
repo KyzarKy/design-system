@@ -1,7 +1,8 @@
 # 0001. Publish @kyzarky/ui on public npm, with tokens and components
 
 **Status:** accepted, 2026-10-07 (Ky). Settles the three open decisions in the
-[README](../../README.md): names, registry, and what ships.
+[README](../../README.md): names, registry, and what ships. Amended 2026-10-10: the
+version published by hand is a placeholder (the Decision's amendment).
 
 ## Context
 
@@ -45,11 +46,17 @@ published to public npm. It ships tokens and React components.**
   or later, Node 22.14 or later, `id-token: write` in the workflow, and a
   `repository.url` in `package.json` that matches the GitHub repo exactly.
 - **Ky creates the npm account** (`kyzarky`, with two-factor auth) **and publishes the
-  first version by hand.** A trusted publisher is added in an existing package's settings
-  on npmjs.com. Release guides from other projects say the package has to exist first;
-  npm's own page doesn't say either way, so we'll find out at setup. After the first CI
-  publish works, the package's publishing access is set to require two-factor auth and
-  disallow tokens.
+  first version by hand.** npm adds a trusted publisher only to a package that already
+  exists (`npm help trust`: "The package you're configuring must already exist on the npm
+  registry"). After the first CI publish works, the package's publishing access is set to
+  require two-factor auth and disallow tokens.
+- **Amended 2026-10-10 (Ky): the version published by hand is a `0.0.0` placeholder, and
+  CI publishes 0.1.0.** npm's trusted publishers page says a new configuration "must
+  complete its first successful publish within 2 days", or it expires and can't be used
+  or edited. Publishing 0.1.0 by hand would have left the first CI publish until 0.2.0,
+  past that deadline. With a placeholder, 0.1.0 comes from CI inside the 2 days, with
+  provenance, and the workflow is proven before anything depends on it. The cost is a
+  deprecated `0.0.0` that stays listed on npm.
 - **`@kyzarky/ui/theme.css`** holds the tokens, Tailwind's `@theme` mapping, and an
   `@source` line pointing at the compiled components. An app adds one `@import` line, and
   its own Tailwind build generates the classes the components use.
