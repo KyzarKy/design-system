@@ -1,0 +1,357 @@
+<!doctype html>
+<!-- Checks theme.css in a real browser (ADR 0003): that light-dark() tokens resolve through
+     var(), inside color-mix() (how Tailwind draws a /15 badge), and by color-scheme, or, in
+     a browser without light-dark(), that the light fallback applies. Open the file in any
+     browser, or run `npm run test:browsers` to open it in Chromium, Firefox, and WebKit.
+     The script leaves the outcome on <html> as data-mode and data-result. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>@kyzarky/ui Browser Check</title>
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      /* The page's own colors are plain values in a media query, not the theme's tokens, so
+         the verdict stays readable in a browser where the theme fails. */
+      :root {
+        --page: #f2f5f5;
+        --panel: #ffffff;
+        --ink: #142120;
+        --sub: #52605d;
+        --line: #d3dcda;
+        --pass: #1d7449;
+        --fail: #b3261e;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --page: #0f1514;
+          --panel: #172020;
+          --ink: #e3ebe9;
+          --sub: #9aa9a5;
+          --line: #2b3836;
+          --pass: #6fcf97;
+          --fail: #f2867c;
+        }
+      }
+
+      body {
+        margin: 0;
+        background: var(--page);
+        color: var(--ink);
+        font: 15px / 1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      main {
+        max-width: 44rem;
+        margin: 0 auto;
+        padding-inline: 16px;
+        padding-block: 28px 48px;
+        display: grid;
+        gap: 32px;
+      }
+      header,
+      section {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+      }
+      h2 {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--sub);
+      }
+      code {
+        font: 0.8125rem ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      .note {
+        color: var(--sub);
+        font-size: 0.875rem;
+        max-width: 65ch;
+      }
+
+      .verdict {
+        display: grid;
+        gap: 6px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+      #result {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      [data-result="pass"] #result {
+        color: var(--pass);
+      }
+      [data-result="fail"] #result {
+        color: var(--fail);
+      }
+      #browser {
+        color: var(--sub);
+        font-size: 0.875rem;
+        overflow-wrap: anywhere;
+      }
+
+      #checks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+      #checks li {
+        display: grid;
+        grid-template-columns: 3.25rem 1fr;
+        gap: 4px 12px;
+        padding: 12px 16px;
+      }
+      #checks li + li {
+        border-top: 1px solid var(--line);
+      }
+      #checks li::before {
+        content: "pass";
+        align-self: start;
+        justify-self: start;
+        padding: 1px 6px;
+        border: 1px solid currentColor;
+        border-radius: 4px;
+        color: var(--pass);
+        font: 500 0.75rem ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      #checks li[data-ok="false"]::before {
+        content: "fail";
+        color: var(--fail);
+      }
+      #checks code {
+        grid-column: 2;
+        color: var(--sub);
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      /* The test panels use only the theme's tokens, as an app's components would. */
+      .panels {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        gap: 12px;
+      }
+      .fx {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background-color: var(--background);
+        color: var(--foreground);
+      }
+      #fx-light {
+        color-scheme: light;
+      }
+      #fx-dark {
+        color-scheme: dark;
+      }
+      #fx-system {
+        color-scheme: light dark;
+      }
+      .fx-name {
+        font-size: 0.8125rem;
+        font-weight: 600;
+      }
+      .t-card {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--border);
+        border-radius: 8px;
+        background-color: var(--card);
+        color: var(--card-foreground);
+      }
+      .t-detail {
+        color: var(--muted-foreground);
+        font-size: 0.8125rem;
+      }
+      .t-meter {
+        height: 8px;
+        border-radius: 999px;
+        overflow: hidden;
+        background-color: var(--muted);
+      }
+      .t-meter > span {
+        display: block;
+        width: 62%;
+        height: 100%;
+        background-color: var(--primary);
+      }
+      .t-badge {
+        justify-self: start;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--success);
+        background-color: color-mix(in oklab, var(--success) 15%, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>@kyzarky/ui Browser Check</h1>
+        <p class="note">
+          Tests that this browser reads the theme's tokens the way the package needs: through
+          <code>var()</code>, inside <code>color-mix()</code>, and switched by
+          <code>color-scheme</code>. To test the third panel, switch the device between light
+          and dark appearance and reload.
+        </p>
+      </header>
+
+      <div class="verdict">
+        <p id="result">Running the checks…</p>
+        <p id="browser"></p>
+      </div>
+
+      <section aria-labelledby="checks-heading">
+        <h2 id="checks-heading">Checks</h2>
+        <ul id="checks"></ul>
+      </section>
+
+      <section aria-labelledby="panels-heading">
+        <h2 id="panels-heading">The tokens in use</h2>
+        <div class="panels">
+          <div class="fx" id="fx-light" data-label="Forced light">
+            <span class="fx-name">Forced light</span>
+            <div class="t-card">
+              <span>Question word order</span>
+              <span class="t-detail">62% · 9 answers</span>
+              <div class="t-meter"><span></span></div>
+              <span class="t-badge">Did every part</span>
+            </div>
+          </div>
+          <div class="fx" id="fx-dark" data-label="Forced dark">
+            <span class="fx-name">Forced dark</span>
+            <div class="t-card">
+              <span>Question word order</span>
+              <span class="t-detail">62% · 9 answers</span>
+              <div class="t-meter"><span></span></div>
+              <span class="t-badge">Did every part</span>
+            </div>
+          </div>
+          <div class="fx" id="fx-system" data-label="Following the device">
+            <span class="fx-name">Follows this device</span>
+            <div class="t-card">
+              <span>Question word order</span>
+              <span class="t-detail">62% · 9 answers</span>
+              <div class="t-meter"><span></span></div>
+              <span class="t-badge">Did every part</span>
+            </div>
+          </div>
+        </div>
+        <p class="note">
+          The first two panels look the same on every device. The third matches whichever of
+          them matches the device's appearance. In a browser without
+          <code>light-dark()</code>, all three show the light theme.
+        </p>
+      </section>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+      const declared = (name) => getComputedStyle(root).getPropertyValue(`--${name}`).trim();
+
+      // Which of the theme's two blocks is in effect: the light-dark() values, or only the
+      // plain fallback. Read from a token, not from what the browser supports, so a theme
+      // that never reaches its light-dark() values can't pass as the fallback.
+      const themed = declared("card").startsWith("light-dark(");
+      const supported = CSS.supports("color", "light-dark(#000, #fff)");
+
+      // A token's light and dark colors, parsed from its declared value. With only the
+      // fallback, its one color is both, so every panel should show it.
+      function token(name) {
+        const value = declared(name);
+        const pair = value.match(/^light-dark\(\s*(#[0-9a-f]{3,8})\s*,\s*(#[0-9a-f]{3,8})\s*\)$/i);
+        return pair ? { light: pair[1], dark: pair[2] } : { light: value, dark: value };
+      }
+
+      // How this browser writes a literal color once computed, so the comparison doesn't
+      // depend on each engine's way of serializing colors.
+      function reference(property, value) {
+        const probe = document.createElement("div");
+        probe.style.setProperty(property, value);
+        document.body.append(probe);
+        const computed = getComputedStyle(probe).getPropertyValue(property);
+        probe.remove();
+        return computed;
+      }
+
+      const checks = [
+        {
+          what: "The theme uses light-dark() exactly where the browser has it",
+          ok: themed === supported,
+          detail: themed
+            ? supported
+              ? "light-dark() values in effect"
+              : "the tokens need light-dark(), which this browser lacks, and no fallback applies"
+            : supported
+              ? "this browser has light-dark(), but the tokens are the plain fallback"
+              : "this browser has no light-dark(), so the fallback applies",
+        },
+      ];
+      function check(what, element, property, expected) {
+        const got = getComputedStyle(element).getPropertyValue(property);
+        const want = reference(property, expected);
+        const ok = got === want;
+        checks.push({ what, ok, detail: ok ? got : `got ${got}, expected ${want}` });
+      }
+
+      const panels = { "fx-light": "light", "fx-dark": "dark", "fx-system": prefersDark ? "dark" : "light" };
+      for (const [id, mode] of Object.entries(panels)) {
+        const panel = document.getElementById(id);
+        const label = `${panel.dataset.label} (${mode})`;
+        const card = panel.querySelector(".t-card");
+        check(`${label}: a card's background`, card, "background-color", token("card")[mode]);
+        check(`${label}: text, through an alias`, card, "color", token("card-foreground")[mode]);
+        check(
+          `${label}: a /15 badge`,
+          panel.querySelector(".t-badge"),
+          "background-color",
+          `color-mix(in oklab, ${token("success")[mode]} 15%, transparent)`,
+        );
+      }
+
+      const failed = checks.filter((c) => !c.ok).length;
+      root.dataset.mode = themed ? "themed" : "fallback";
+      root.dataset.result = failed ? "fail" : "pass";
+      document.getElementById("result").textContent = failed
+        ? `${failed} of ${checks.length} checks failed`
+        : themed
+          ? `All ${checks.length} checks pass`
+          : `All ${checks.length} checks pass with the light fallback: this browser has no light-dark(), so there's no dark theme`;
+      document.getElementById("browser").textContent = navigator.userAgent;
+
+      for (const c of checks) {
+        const li = document.createElement("li");
+        li.dataset.ok = String(c.ok);
+        li.append(Object.assign(document.createElement("span"), { textContent: c.what }));
+        li.append(Object.assign(document.createElement("code"), { textContent: c.detail }));
+        document.getElementById("checks").append(li);
+      }
+    </script>
+  </body>
+</html>

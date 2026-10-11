@@ -1,5 +1,6 @@
-# Runs npm run verify (typecheck, lint, and the contrast and Tailwind tests) on every push
-# to main and every pull request.
+# Runs on every push to main and every pull request. `verify` is npm run verify
+# (typecheck, lint, and the contrast, fallback, and Tailwind tests). `browsers` opens the
+# theme in real browser engines (ADR 0003).
 name: CI
 
 on:
@@ -27,3 +28,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run verify
+
+  browsers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:browsers

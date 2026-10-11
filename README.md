@@ -111,8 +111,9 @@ table above.
 
 | Command | What it does |
 |---|---|
-| `npm run verify` | Typecheck, lint, and test: what CI runs |
+| `npm run verify` | Typecheck, lint, and test |
 | `npm test` | The contrast and fallback tests, and a Tailwind build of the theme |
+| `npm run test:browsers` | Opens `browser-check.html` in Chromium, Firefox, and WebKit, in light and dark. Needs `npx playwright install` once. Add engine names to run only those: `npm run test:browsers -- webkit` |
 | `npm run format` | Biome: format and apply safe lint fixes |
 
 ## Releasing
