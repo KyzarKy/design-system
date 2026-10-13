@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+The first components ([ADR 0002](docs/decisions/0002-first-scope.md)): `List`, `ListRow`,
+and `Meter`, for lists whose rows carry a graphic. Rows get a divider and more space
+between them than inside them; groups get a heading and more space still.
+[Before and after](docs/audit/0.2.0-trial) in Fluent Prior's "What you know" panel.
+
+To upgrade from 0.1.0: nothing changes for the tokens. The package now needs React 19 as
+a peer dependency, and `theme.css` has the app's Tailwind scan the package's `dist` folder.
+
 ## 0.1.0
 
 The tokens ([ADR 0002](docs/decisions/0002-first-scope.md)): `theme.css`, with 14 color
