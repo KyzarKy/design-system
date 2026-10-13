@@ -2,7 +2,8 @@
 
 **Status:** accepted, 2026-10-07 (Ky; proposed the same day). Amended by
 [ADR 0003](0003-light-fallback-and-browser-check.md): older browsers get a light fallback,
-and the browser check in section 2 runs in CI.
+and the browser check in section 2 runs in CI. Amended 2026-10-13 (Ky): Fluent Prior
+upgrades once, at 0.3.0 (section 4).
 
 ## Context
 
@@ -113,6 +114,12 @@ README states the rules, and its components follow them:
 
 Each release is one pull request here, then one in Fluent Prior when Ky asks for it. Each
 stays under about 400 changed lines.
+
+**Amended 2026-10-13 (Ky): Fluent Prior took 0.1.0, skips 0.2.0, and upgrades once at
+0.3.0,** to save a pull request there for each release. So that the list's spacing is
+still judged before it's published, 0.2.0's packed build is tried in a scratch copy of
+Fluent Prior, and Ky judges the rows from before and after screenshots of both views
+([docs/audit/0.2.0-trial](../audit/0.2.0-trial)).
 
 **0.1.0: tokens.** `theme.css` (the tokens, the `@theme inline` mapping, and `body`
 colors), the package's CI, and the publish workflow. Fluent Prior's adoption:
