@@ -9,6 +9,10 @@
    color-scheme itself. Components use the utilities (bg-card, text-muted-foreground) and
    never Tailwind's dark: variant. */
 
+/* The components are published as compiled files full of Tailwind class names. This has
+   the app's Tailwind scan them, so it generates those classes along with the app's own. */
+@source "./dist";
+
 /* In the base layer, so an app's own unlayered rules win wherever it puts them. That's
    how an app themes the package: by redefining a token. */
 @layer base {

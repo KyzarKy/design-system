@@ -4,7 +4,7 @@
 // Tailwind, built the way an app's production build runs it, turns every token into
 // utilities that read it, with light-dark() and the fallback left intact.
 
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { compile, optimize } from "@tailwindcss/node";
 import { describe, expect, test } from "vitest";
 
@@ -119,13 +119,38 @@ describe("fallback", () => {
 
 describe("Tailwind", () => {
   // The same compile and optimize steps @tailwindcss/vite runs in an app's production build.
+  const compiling = compile('@import "tailwindcss";\n@import "./theme.css";', {
+    base: import.meta.dirname,
+    onDependency: () => {},
+  });
   async function build(candidates: string[]): Promise<string> {
-    const compiler = await compile('@import "tailwindcss";\n@import "./theme.css";', {
-      base: import.meta.dirname,
-      onDependency: () => {},
-    });
-    return optimize(compiler.build(candidates)).code;
+    return optimize((await compiling).build(candidates)).code;
   }
+
+  test("the theme tells Tailwind to scan the compiled components", async () => {
+    const { sources } = await compiling;
+    expect(sources).toContainEqual({
+      base: import.meta.dirname,
+      pattern: "./dist",
+      negated: false,
+    });
+  });
+
+  // An app can't catch a mistyped class inside a package: Tailwind skips names it doesn't
+  // know, and the style is silently missing.
+  test("every class the components use is one Tailwind generates", async () => {
+    const src = new URL("./src/", import.meta.url);
+    const classes = readdirSync(src)
+      .filter((file) => file.endsWith(".tsx") && !file.endsWith(".test.tsx"))
+      .flatMap((file) => [
+        ...readFileSync(new URL(file, src), "utf8").matchAll(/className="([^"]+)"/g),
+      ])
+      .flatMap((match) => (match[1] ?? "").split(" "));
+    expect(classes.length).toBeGreaterThan(0);
+    const css = await build(classes);
+    const missing = classes.filter((name) => !css.includes(`.${name.replace(/[:/.]/g, "\\$&")}`));
+    expect(missing).toEqual([]);
+  });
 
   test("every token gets utilities that read it where they're used", async () => {
     const names = [...tokens.keys()];

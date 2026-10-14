@@ -1,12 +1,14 @@
 {
-  // Typechecks the tests for now. The components arrive in 0.2.0 and add JSX and emit.
+  // Typechecks everything: the components, the tests, and the browser check script.
+  // tsconfig.build.json compiles the components for publishing.
   "compilerOptions": {
     "target": "ES2023",
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM"],
     "types": ["node"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "moduleDetection": "force",
+    "jsx": "react-jsx",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
@@ -18,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["*.ts"]
+  "include": ["*.ts", "src"]
 }

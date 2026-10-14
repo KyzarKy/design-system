@@ -1,8 +1,9 @@
 # @kyzarky/ui
 
-Design tokens for Ky Merritt's apps: a Tailwind CSS 4 theme with light and dark values.
-React components arrive in 0.2.0 ([ADR 0002](docs/decisions/0002-first-scope.md)). First
-consumer: Fluent Prior. Next: Merritt's Mini Mind.
+Design tokens and React components for Ky Merritt's apps: a Tailwind CSS 4 theme with
+light and dark values, and the components built on it
+([ADR 0002](docs/decisions/0002-first-scope.md)). First consumer: Fluent Prior. Next:
+Merritt's Mini Mind.
 
 ## Use
 
@@ -17,7 +18,9 @@ Then import the theme after Tailwind in the app's CSS:
 @import "@kyzarky/ui/theme.css";
 ```
 
-It needs Tailwind CSS 4. **Pin an exact version and upgrade on purpose,** so work in
+It needs Tailwind CSS 4, and React 19 for the components. The import also has the app's
+Tailwind scan the package's components, so their classes are generated with the app's own.
+**Pin an exact version and upgrade on purpose,** so work in
 progress here never changes an app under it. The [changelog](CHANGELOG.md) says what each
 version changes and how to upgrade.
 
@@ -78,6 +81,26 @@ own rule wins wherever it is. For example, a green brand color:
 `ring` follows `primary` unless you set it too. Keep the contrast of every pair in the
 table above.
 
+## Components
+
+```tsx
+import { List, ListRow, Meter } from "@kyzarky/ui";
+
+<List heading={<h3>Grammar</h3>} description="Optional help text.">
+  <ListRow label="Question word order" detail="99% · 9 answers">
+    <Meter value={0.99} />
+  </ListRow>
+</List>
+```
+
+- **`List`** is a group of rows with a divider between them. Pass the `heading` as an
+  element, at whatever level the page needs; `List` sets its look. A `List` that follows
+  something sits 32px below it.
+- **`ListRow`** is one row: a `label`, a `detail` on the right, and optional children
+  below for a graphic.
+- **`Meter`** is a bar for a `value` from 0 to 1. It's hidden from screen readers, so
+  state the value in the row's `detail`.
+
 ## Rules
 
 - **Less space inside a group than between groups,** at least 1:2.
@@ -111,8 +134,9 @@ table above.
 
 | Command | What it does |
 |---|---|
-| `npm run verify` | Typecheck, lint, and test |
-| `npm test` | The contrast and fallback tests, and a Tailwind build of the theme |
+| `npm run verify` | Typecheck, lint, test, and build |
+| `npm run build` | Compiles `src` to `dist` with `tsc`. `npm pack` and `npm publish` run it first |
+| `npm test` | The contrast, fallback, and component tests, and a Tailwind build of the theme |
 | `npm run test:browsers` | Opens `browser-check.html` in Chromium, Firefox, and WebKit, in light and dark. Needs `npx playwright install` once. Add engine names to run only those: `npm run test:browsers -- webkit` |
 | `npm run format` | Biome: format and apply safe lint fixes |
 
