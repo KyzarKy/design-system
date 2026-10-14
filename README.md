@@ -101,6 +101,36 @@ import { List, ListRow, Meter } from "@kyzarky/ui";
 - **`Meter`** is a bar for a `value` from 0 to 1. It's hidden from screen readers, so
   state the value in the row's `detail`.
 
+```tsx
+import { Button, Card, SegmentedControl } from "@kyzarky/ui";
+
+<Card aria-labelledby="progress-heading" className="flex flex-col gap-4">
+  <SegmentedControl
+    label="Show"
+    value={view}
+    onChange={setView}
+    options={[
+      { value: "now", label: "Now" },
+      { value: "over-time", label: "Over time" },
+    ]}
+  />
+  <Button type="submit">Check my answer</Button>
+  <Button variant="outline" onClick={next}>Next situation</Button>
+</Card>
+```
+
+- **`Card`** is a raised surface, rendered as a `<section>`. Name it with
+  `aria-labelledby` or `aria-label`.
+- **`Button`** takes shadcn/ui's props: `variant` is `default` (filled), `outline`, or
+  `ghost`, and `size` is `default` or `icon`. Unlike a bare `<button>`, its `type` is
+  `button` unless you pass `submit`. It also takes every native button prop.
+- **`SegmentedControl`** picks one option from a few. It's a group of radio buttons
+  underneath, so arrow keys move between options. `label` names the group for screen
+  readers and isn't shown.
+
+`Card` and `Button` take a `className` for layout only (`flex-1`, `w-full`, a `gap`). It's
+added after the component's own classes, not merged with them, so don't use it to restyle.
+
 ## Rules
 
 - **Less space inside a group than between groups,** at least 1:2.

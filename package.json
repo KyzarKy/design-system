@@ -1,6 +1,6 @@
 {
   "name": "@kyzarky/ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Design tokens and React components for Ky Merritt's apps, built on Tailwind CSS 4",
   "license": "MIT",
   "author": "Ky Merritt",

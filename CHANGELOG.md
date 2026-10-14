@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0
+
+`Card`, `Button`, and `SegmentedControl` ([ADR 0002](docs/decisions/0002-first-scope.md)),
+extracted from Fluent Prior. [Before and after](docs/audit/0.3.0-trial) of its page built
+from them. Nothing changes for apps on 0.2.0 that don't use them.
+
+Replacing an app's own markup with them changes three things:
+
+- **An outlined button's edge is `input`, not `border`,** so it's darker: the same edge as
+  a text field.
+- **`Button`'s `type` defaults to `button`.** Pass `type="submit"` to submit a form.
+- **`SegmentedControl` is radio buttons,** where Fluent Prior had toggle buttons with
+  `aria-pressed`. Arrow keys now move between options, and a screen reader announces a
+  radio group.
+
 ## 0.2.0
 
 The first components ([ADR 0002](docs/decisions/0002-first-scope.md)): `List`, `ListRow`,
