@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+`Modal` and `Link`, extracted from Fluent Prior, and the two rules they follow
+([ADR 0004](docs/decisions/0004-modal-and-link.md)). Nothing changes for apps that don't
+use them.
+
+- **`Modal`** is a native `<dialog>` with a title and a body. The header, with the title
+  and the close button, stays in view while the body scrolls. Escape, the close button,
+  or a click outside closes it.
+- **`Link`** is an `<a>` that looks like a link in every state: underline, pointer, a
+  thicker underline on hover, and a focus ring.
+- **A new rule: links go somewhere; buttons do something.** A control that looks like a
+  link but fills a box or switches a view should become a `Button`.
+
 ## 0.3.0
 
 `Card`, `Button`, and `SegmentedControl` ([ADR 0002](docs/decisions/0002-first-scope.md)),

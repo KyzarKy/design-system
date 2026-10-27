@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
 import * as ui from "./index.js";
-import { Button, Card, List, ListRow, Meter, SegmentedControl } from "./index.js";
+import { Button, Card, Link, List, ListRow, Meter, Modal, SegmentedControl } from "./index.js";
 
 test.each([
   [0.42, "42%"],
@@ -109,6 +109,26 @@ test("SegmentedControl is one named group of radio buttons with the value checke
   expect(radios.map((radio) => radio.includes("checked"))).toEqual([false, true]);
 });
 
+test("Link is an <a> that keeps its href", () => {
+  expect(renderToStaticMarkup(<Link href="#about">About</Link>)).toMatch(
+    /^<a class="[^"]*underline[^"]*" href="#about">About<\/a>$/,
+  );
+});
+
+test("Modal is a dialog named by its title, with a close button and a focusable body", () => {
+  const html = renderToStaticMarkup(
+    <Modal open onClose={() => {}} title="How it works">
+      <p>Body</p>
+    </Modal>,
+  );
+  const titleId = html.match(/<h2 id="([^"]+)"/)?.[1];
+  expect(titleId).toBeTruthy();
+  expect(html).toMatch(new RegExp(`^<dialog aria-labelledby="${titleId}"`));
+  // The header, with the title and the close button, comes before the scrolling body.
+  expect(html).toMatch(/<header [^>]*><h2 [^>]*>How it works<\/h2><button [^>]*aria-label="Close"/);
+  expect(html).toMatch(/<\/header><section [^>]*tabindex="0"[^>]*><p>Body<\/p><\/section>/);
+});
+
 // One rendering of every component, with each variant and optional part, for the class
 // check below. A new component has to be added here: the first test fails until it is.
 const SAMPLES: Record<string, ReactNode> = {
@@ -120,6 +140,7 @@ const SAMPLES: Record<string, ReactNode> = {
     </>
   ),
   Card: <Card>Body</Card>,
+  Link: <Link href="#a">Link</Link>,
   List: (
     <List heading={<h3>Heading</h3>} description="Description">
       <ListRow label="Row" />
@@ -131,6 +152,11 @@ const SAMPLES: Record<string, ReactNode> = {
     </ListRow>
   ),
   Meter: <Meter value={0.5} />,
+  Modal: (
+    <Modal open onClose={() => {}} title="Title">
+      Body
+    </Modal>
+  ),
   SegmentedControl: (
     <SegmentedControl
       label="Show"
@@ -161,7 +187,9 @@ test("every class the components render is one Tailwind generates", async () => 
     onDependency: () => {},
   });
   const css = compiler.build(classes);
-  const escaped = (name: string) => name.replace(/[:/.]/g, (character) => `\\${character}`);
+  // As in a CSS selector: every character but letters, digits, _ and - gets a backslash, so
+  // arbitrary values like w-[calc(100%-2rem)] are found too.
+  const escaped = (name: string) => name.replace(/[^\w-]/g, (character) => `\\${character}`);
   const missing = classes.filter((name) => !css.includes(`.${escaped(name)}`));
   expect(missing).toEqual([]);
 });
