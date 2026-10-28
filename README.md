@@ -141,6 +141,13 @@ added after the component's own classes, not merged with them, so don't use it t
   chips `text-xs`.
 - **Every control is at least 44px tall.**
 - **A value shown as a graphic is also shown as text.**
+- **Links go somewhere; buttons do something.** Anything that looks like a link is a
+  `Link`: an `<a href>` to a page or a place on one, underlined, with a pointer, a hover
+  state, and a focus ring. Anything that fills, switches, submits, or erases is a
+  `Button`, and looks like one.
+- **A modal has a title and a body.** The title and the close button are in a header that
+  stays in view; only the body scrolls. The body takes any content, styled like the rest
+  of the page, with its headings starting at `h3` under the title. Use `Modal`.
 
 ## Why
 
