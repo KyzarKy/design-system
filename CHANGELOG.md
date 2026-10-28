@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0
+
+`PageHeader`, and two rules ([ADR 0005](docs/decisions/0005-page-header.md)). Nothing
+changes for apps that don't use it.
+
+- **`PageHeader`** is the top of a page: the `h1` title, a one-sentence description at
+  body size, and a row for the page's own links or actions.
+- **A new rule: a page starts with a `PageHeader`,** with the spacing in the README.
+- **A new rule: a button never sits inside a paragraph.** It goes on its own row.
+
 ## 0.4.0
 
 `Modal` and `Link`, extracted from Fluent Prior, and the two rules they follow

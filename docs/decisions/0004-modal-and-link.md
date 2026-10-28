@@ -1,7 +1,7 @@
 # ADR 0004: Modal and Link, before a second app needs them
 
-**Status:** proposed, 2026-10-27. Ky asked for both as design-system rules; merging this
-accepts it.
+**Status:** accepted, 2026-10-28, when #4 merged. Ky asked for both as design-system
+rules.
 
 ## Context
 

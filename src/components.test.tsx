@@ -8,7 +8,17 @@ import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
 import * as ui from "./index.js";
-import { Button, Card, Link, List, ListRow, Meter, Modal, SegmentedControl } from "./index.js";
+import {
+  Button,
+  Card,
+  Link,
+  List,
+  ListRow,
+  Meter,
+  Modal,
+  PageHeader,
+  SegmentedControl,
+} from "./index.js";
 
 test.each([
   [0.42, "42%"],
@@ -129,6 +139,26 @@ test("Modal is a dialog named by its title, with a close button and a focusable 
   expect(html).toMatch(/<\/header><section [^>]*tabindex="0"[^>]*><p>Body<\/p><\/section>/);
 });
 
+test("PageHeader is a header with one h1, then the description, then the actions", () => {
+  const html = renderToStaticMarkup(
+    <PageHeader
+      title="Fluent Prior"
+      description="English practice."
+      actions={<Link href="#how">How it works</Link>}
+    />,
+  );
+  expect(html).toMatch(
+    /^<header [^>]*><h1 [^>]*>Fluent Prior<\/h1><p [^>]*>English practice\.<\/p><div [^>]*><a /,
+  );
+  expect(html.match(/<h1/g)).toHaveLength(1);
+});
+
+test("PageHeader leaves out the description and the actions row when they aren't given", () => {
+  const html = renderToStaticMarkup(<PageHeader title="Title" />);
+  expect(html).not.toContain("<p");
+  expect(html).not.toContain("<div");
+});
+
 // One rendering of every component, with each variant and optional part, for the class
 // check below. A new component has to be added here: the first test fails until it is.
 const SAMPLES: Record<string, ReactNode> = {
@@ -156,6 +186,9 @@ const SAMPLES: Record<string, ReactNode> = {
     <Modal open onClose={() => {}} title="Title">
       Body
     </Modal>
+  ),
+  PageHeader: (
+    <PageHeader title="Title" description="Description" actions={<Link href="#a">Link</Link>} />
   ),
   SegmentedControl: (
     <SegmentedControl
