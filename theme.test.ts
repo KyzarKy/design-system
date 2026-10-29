@@ -2,8 +2,7 @@
 // on meets WCAG AA in light and dark mode, so a palette change that breaks contrast fails
 // CI. The fallback for browsers without light-dark() is exactly the light theme. And
 // Tailwind, built the way an app's production build runs it, turns every token into
-// utilities that read it, with light-dark() and the fallback left intact. Also that the
-// build keeps the modal scroll lock.
+// utilities that read it, with light-dark() and the fallback left intact.
 
 import { readFileSync } from "node:fs";
 import { compile, optimize } from "@tailwindcss/node";
@@ -157,11 +156,6 @@ describe("Tailwind", () => {
     expect(css).toContain("color-scheme: light dark");
     // Lightning CSS may shorten a hex color (#ffffff to #fff), so match any hex.
     expect(css).toMatch(/--success: light-dark\(#[0-9a-f]{3,6}, #[0-9a-f]{3,6}\)/);
-  });
-
-  test("the production build keeps the scroll lock for an open modal", async () => {
-    const css = await build([]);
-    expect(css).toMatch(/:root:has\(dialog:modal\)\s*\{\s*overflow:\s*hidden/);
   });
 
   test("the production build keeps the fallback, ahead of the @supports block", async () => {

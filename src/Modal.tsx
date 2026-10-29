@@ -22,8 +22,20 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
 
   useEffect(() => {
     const element = dialog.current;
-    if (open && !element?.open) element?.showModal();
-    if (!open && element?.open) element.close();
+    if (!open || !element) {
+      if (element?.open) element.close();
+      return;
+    }
+    if (!element.open) element.showModal();
+    // The page behind stays put. iOS Safari still scrolls a page set to overflow: hidden,
+    // so the body is pinned where it was, then put back where it was on close.
+    const y = window.scrollY;
+    const { style } = document.body;
+    Object.assign(style, { position: "fixed", top: `-${y}px`, insetInline: "0" });
+    return () => {
+      Object.assign(style, { position: "", top: "", insetInline: "" });
+      window.scrollTo({ top: y, behavior: "instant" });
+    };
   }, [open]);
 
   return (
