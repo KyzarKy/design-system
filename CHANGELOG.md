@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+- **Fixed: the page behind an open `Modal` no longer scrolls on iPhone.** iOS Safari
+  ignored 0.5.0's `overflow: hidden`, so `Modal` now pins the page in place while it's
+  open and puts it back where it was on close. The rule in `theme.css` is gone.
+
 ## 0.5.0
 
 `PageHeader`, two rules ([ADR 0005](docs/decisions/0005-page-header.md)), and a `Modal`
