@@ -124,6 +124,8 @@ import { Button, Card, SegmentedControl } from "@kyzarky/ui";
 - **`Button`** takes shadcn/ui's props: `variant` is `default` (filled), `outline`, or
   `ghost`, and `size` is `default` or `icon`. Unlike a bare `<button>`, its `type` is
   `button` unless you pass `submit`. It also takes every native button prop.
+- **`PageHeader`** is the top of a page: `title` (its only `h1`), an optional one-sentence
+  `description` (a string), and optional `actions`, such as a `Link`.
 - **`SegmentedControl`** picks one option from a few. It's a group of radio buttons
   underneath, so arrow keys move between options. `label` names the group for screen
   readers and isn't shown.
@@ -145,6 +147,13 @@ added after the component's own classes, not merged with them, so don't use it t
   `Link`: an `<a href>` to a page or a place on one, underlined, with a pointer, a hover
   state, and a focus ring. Anything that fills, switches, submits, or erases is a
   `Button`, and looks like one.
+- **A page starts with a `PageHeader`:** the title, a one-sentence description at body
+  size in `muted-foreground`, and the page's own links or actions, never inside the
+  description's sentence. Below 640px the actions sit beside the title; from 640px up they
+  have a row of their own. Each action is at least 24px tall. 6px between the parts, and
+  at least twice that (12px) between the header and the page below it.
+- **A button never sits inside a paragraph.** A `<p>` holds text and inline links. A
+  button goes on its own row, after the text it follows.
 - **A modal has a title and a body.** The title and the close button are in a header that
   stays in view; only the body scrolls. The body takes any content, styled like the rest
   of the page, with its headings starting at `h3` under the title. Use `Modal`.
@@ -166,6 +175,10 @@ added after the component's own classes, not merged with them, so don't use it t
   a [style audit](docs/audit/README.md) of both apps.
 - **[ADR 0003](docs/decisions/0003-light-fallback-and-browser-check.md), accepted:** a
   light fallback for browsers without `light-dark()`, and a browser check in CI.
+- **[ADR 0004](docs/decisions/0004-modal-and-link.md), accepted:** `Modal` and `Link` before
+  a second app needs them, because they come with rules.
+- **[ADR 0005](docs/decisions/0005-page-header.md), accepted:** `PageHeader`, for the same
+  reason.
 
 ## Development
 

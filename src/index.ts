@@ -7,4 +7,5 @@ export { List } from "./List.js";
 export { ListRow } from "./ListRow.js";
 export { Meter } from "./Meter.js";
 export { Modal } from "./Modal.js";
+export { PageHeader } from "./PageHeader.js";
 export { SegmentedControl } from "./SegmentedControl.js";

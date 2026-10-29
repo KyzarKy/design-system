@@ -57,7 +57,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
           aria-labelledby={titleId}
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable region must be reachable by keyboard (WCAG 2.1.1).
           tabIndex={0}
-          className="overflow-y-auto rounded-b-2xl p-5 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+          className="overflow-y-auto overscroll-contain rounded-b-2xl p-5 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
         >
           {children}
         </section>

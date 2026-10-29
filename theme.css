@@ -64,6 +64,12 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+
+  /* The page behind an open modal doesn't scroll. :modal, not [open], so a dialog opened
+     with show() leaves the page alone. A browser without :has() skips this and scrolls. */
+  :root:has(dialog:modal) {
+    overflow: hidden;
+  }
 }
 
 /* inline: each utility reads the token where it's used, not a copy resolved at :root, so

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0
+
+`PageHeader`, two rules ([ADR 0005](docs/decisions/0005-page-header.md)), and a `Modal`
+fix. No existing component's API changes.
+
+- **`PageHeader`** is the top of a page: the `h1` title, a one-sentence description at
+  body size, and the page's own links or actions, beside the title below 640px and on a
+  row of their own from 640px up.
+- **A new rule: a page starts with a `PageHeader`,** with the spacing in the README.
+- **A new rule: a button never sits inside a paragraph.** It goes on its own row.
+- **Fixed: the page behind an open `Modal` no longer scrolls,** from `theme.css`. And
+  scrolling past the end of a modal's body no longer scrolls the page.
+
 ## 0.4.0
 
 `Modal` and `Link`, extracted from Fluent Prior, and the two rules they follow
