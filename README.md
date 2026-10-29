@@ -161,10 +161,7 @@ added after the component's own classes, not merged with them, so don't use it t
 ## Why
 
 - One visual language across Ky's portfolio apps.
-- Fluent Prior's "What you know" list is hard to read: it's hard to tell where one row ends
-  and the next starts. The fix is rules the app never had, and they belong here, not in
-  one app.
-- A token-themed design system is the kind of frontend work Ky's job search targets.
+- A token-themed design system is related to the kind of frontend work Ky's job search targets.
 
 ## Decisions
 
@@ -212,11 +209,3 @@ unless it makes a successful publish within 2 days. So:
    confirms the setup. A replacement trusted publisher would have the same 2 days.
 4. Then publishing access is set to require two-factor auth and disallow tokens, in the
    package's settings on npmjs.com.
-
-## How we work
-
-Ky decides; Claude proposes and implements. Docs first: decisions go in ADRs before code.
-Small commits, each saying what changed and why, how to verify it, and three questions an
-interviewer might ask, with short answers. Never commit secrets. Never force-push. Commits
-use Ky's GitHub noreply email (set in this repo's git config). In anything written in Ky's
-voice: no em dashes, and use Oxford commas.
