@@ -151,6 +151,11 @@ describe("Tailwind", () => {
     expect(css).toContain("color-mix(in oklab, var(--success) 15%, transparent)");
   });
 
+  test("the production build gives an enabled button the pointer cursor", async () => {
+    const css = await build([]);
+    expect(css).toMatch(/button:not\(:disabled\)\s*\{\s*cursor:\s*pointer/);
+  });
+
   test("the production build keeps light-dark(), rather than rewriting it for older browsers", async () => {
     const css = await build([]);
     expect(css).toContain("color-scheme: light dark");

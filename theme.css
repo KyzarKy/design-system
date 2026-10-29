@@ -64,6 +64,12 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+
+  /* Tailwind 4 resets buttons to the default cursor. Anything that can be clicked shows
+     the pointer, the same as a link. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* inline: each utility reads the token where it's used, not a copy resolved at :root, so
