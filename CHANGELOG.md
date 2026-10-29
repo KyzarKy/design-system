@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2
+
+- **Fixed: buttons show the pointer cursor,** from `theme.css`, for every enabled
+  `<button>`: `Button`, `Modal`'s close button, and an app's own buttons, such as tabs.
+  Tailwind 4 had reset them to the default arrow. A disabled button keeps the arrow.
+
 ## 0.5.1
 
 - **Fixed: the page behind an open `Modal` no longer scrolls on iPhone.** iOS Safari
