@@ -9,3 +9,5 @@ export { Meter } from "./Meter.js";
 export { Modal } from "./Modal.js";
 export { PageHeader } from "./PageHeader.js";
 export { SegmentedControl } from "./SegmentedControl.js";
+export { Select } from "./Select.js";
+export { Table, TableAction } from "./Table.js";
