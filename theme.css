@@ -134,9 +134,17 @@
       display: none;
     }
 
-    & option:hover,
+    /* A phone's last tap would otherwise stay highlighted. */
+    @media (hover: hover) {
+      & option:hover {
+        background-color: var(--muted);
+      }
+    }
+
+    /* The ring, because --muted alone is too faint on --card to find while arrowing. */
     & option:focus-visible {
-      outline: none;
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
       background-color: var(--muted);
     }
 

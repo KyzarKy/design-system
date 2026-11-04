@@ -1,6 +1,6 @@
 # ADR 0005: PageHeader, before a second app needs it
 
-**Status:** accepted, 2026-10-29, when #5 merged. Ky asked for the header's layout to be a
+**Status:** accepted, 2026-10-29, when #5 merged. [ADR 0006](0006-select-table-wide-header.md) changes the layout from 1024px up. Ky asked for the header's layout to be a
 design-system rule.
 
 ## Context

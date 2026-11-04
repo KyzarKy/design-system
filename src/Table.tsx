@@ -13,7 +13,12 @@ interface TableProps extends ComponentProps<"table"> {
 
 export function Table({ caption, className, children, ...props }: TableProps) {
   return (
-    <div className="overflow-x-auto">
+    // Focusable, so a keyboard can scroll a table with no buttons where the browser won't do it itself.
+    <div
+      className="overflow-x-auto focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling region has to take focus
+      tabIndex={0}
+    >
       <table
         className={joinClasses(
           "w-full text-left text-sm [&_tbody_tr]:border-border [&_tbody_tr]:border-b [&_td]:px-2 [&_td]:py-2 [&_th]:px-2 [&_th]:py-2 [&_th]:font-semibold [&_thead_tr]:border-border [&_thead_tr]:border-b",
@@ -29,8 +34,8 @@ export function Table({ caption, className, children, ...props }: TableProps) {
 }
 
 /**
- * A button that fills its table cell, padding included, so the hover stays inside the table
- * and the text stays on the column's edge.
+ * A button as wide as its table cell, padding included, so the hover stays inside the table
+ * and the text stays on the column's edge. It's 44px tall, so a taller row has room around it.
  */
 export function TableAction({ className, ...props }: ComponentProps<"button">) {
   return (

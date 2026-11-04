@@ -126,7 +126,7 @@ import { Button, Card, SegmentedControl } from "@kyzarky/ui";
   `button` unless you pass `submit`. It also takes every native button prop.
 - **`PageHeader`** is the top of a page: `title` (its only `h1`), an optional one-sentence
   `description` (a string), and optional `actions`, such as a `Link`.
-- **`Select`** is a native `<select>` that takes every native prop. Name it with a
+- **`Select`** is a native `<select>` for one choice from a list (`multiple` and `size` aren't styled). Name it with a
   `<label htmlFor>`.
 - **`Table`** takes plain `<thead>`, `<tr>`, `<th>`, and `<td>`, and an optional `caption`. Use
   `text-right tabular-nums` on number columns. **`TableAction`** is the button for a row that

@@ -177,7 +177,7 @@ test("Table has a caption when given one, and scrolls inside its own box", () =>
       <tbody />
     </Table>,
   );
-  expect(html).toMatch(/^<div class="overflow-x-auto"><table /);
+  expect(html).toMatch(/^<div class="overflow-x-auto[^"]*" tabindex="0"><table /);
   expect(html).toContain(">Counts</caption>");
   expect(renderToStaticMarkup(<Table />)).not.toContain("<caption");
 });

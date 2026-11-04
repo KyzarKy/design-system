@@ -17,7 +17,9 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
-    <header className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 sm:grid-cols-1 lg:grid-cols-[1fr_auto] lg:gap-x-8">
+    <header
+      className={`grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 sm:grid-cols-1 ${actions ? "lg:grid-cols-[1fr_auto] lg:gap-x-8" : ""}`}
+    >
       <h1 className="font-semibold text-2xl leading-tight tracking-tight lg:col-start-1 lg:text-3xl">
         {title}
       </h1>
@@ -28,7 +30,9 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
       )}
       {/* Each action is at least 24px tall, the WCAG 2.5.8 target size. */}
       {actions && (
-        <div className="col-start-2 row-start-1 flex flex-wrap gap-x-4 gap-y-2 text-sm *:inline-flex *:min-h-6 *:items-center sm:col-start-1 sm:row-start-auto lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-end lg:self-center">
+        <div
+          className={`col-start-2 row-start-1 flex flex-wrap gap-x-4 gap-y-2 text-sm *:inline-flex *:min-h-6 *:items-center sm:col-start-1 sm:row-start-auto lg:col-start-2 lg:row-start-1 lg:justify-end lg:self-center ${description ? "lg:row-span-2" : ""}`}
+        >
           {actions}
         </div>
       )}
