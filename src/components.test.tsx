@@ -18,6 +18,9 @@ import {
   Modal,
   PageHeader,
   SegmentedControl,
+  Select,
+  Table,
+  TableAction,
 } from "./index.js";
 
 test.each([
@@ -159,6 +162,30 @@ test("PageHeader leaves out the description and the actions row when they aren't
   expect(html).not.toContain("<div");
 });
 
+test("Select is a native select, with the app's class after its own", () => {
+  const html = renderToStaticMarkup(
+    <Select id="a" className="max-w-xs">
+      <option>One</option>
+    </Select>,
+  );
+  expect(html).toBe('<select class="ui-select max-w-xs" id="a"><option>One</option></select>');
+});
+
+test("Table has a caption when given one, and scrolls inside its own box", () => {
+  const html = renderToStaticMarkup(
+    <Table caption="Counts">
+      <tbody />
+    </Table>,
+  );
+  expect(html).toMatch(/^<div class="overflow-x-auto[^"]*" tabindex="0"><table /);
+  expect(html).toContain(">Counts</caption>");
+  expect(renderToStaticMarkup(<Table />)).not.toContain("<caption");
+});
+
+test("TableAction is a plain button", () => {
+  expect(renderToStaticMarkup(<TableAction>Open</TableAction>)).toMatch(/^<button type="button"/);
+});
+
 // One rendering of every component, with each variant and optional part, for the class
 // check below. A new component has to be added here: the first test fails until it is.
 const SAMPLES: Record<string, ReactNode> = {
@@ -201,6 +228,9 @@ const SAMPLES: Record<string, ReactNode> = {
       ]}
     />
   ),
+  Select: <Select />,
+  Table: <Table caption="Caption" />,
+  TableAction: <TableAction />,
 };
 
 test("the class check covers every component the package exports", () => {
@@ -212,7 +242,11 @@ test("the class check covers every component the package exports", () => {
 test("every class the components render is one Tailwind generates", async () => {
   const html = renderToStaticMarkup(Object.values(SAMPLES));
   const classes = [
-    ...new Set([...html.matchAll(/class="([^"]+)"/g)].flatMap((match) => match[1]?.split(" "))),
+    ...new Set(
+      [...html.matchAll(/class="([^"]+)"/g)].flatMap((match) =>
+        match[1]?.replaceAll("&amp;", "&").split(" "),
+      ),
+    ),
   ].filter((name) => name !== undefined);
   expect(classes.length).toBeGreaterThan(20);
   const compiler = await compile('@import "tailwindcss";\n@import "./theme.css";', {

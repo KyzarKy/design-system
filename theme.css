@@ -72,6 +72,89 @@
   }
 }
 
+/* A select with room for its caret. A utility, so an app's own max-w-xs still applies. The
+   caret is an image because a native select can't hold an element, and its gray is
+   readable on both themes' cards. */
+@utility ui-select {
+  appearance: none;
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--input);
+  border-radius: 0.75rem;
+  background-color: var(--card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23858279' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-inline: 0.75rem 2.5rem;
+  font-size: 1rem;
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  /* Styles the open list, where the browser can (ADR 0006). */
+  @supports (appearance: base-select) {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    & {
+      display: flex;
+      align-items: center;
+    }
+
+    &::picker-icon {
+      display: none;
+    }
+
+    &::picker(select) {
+      margin-block: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background-color: var(--card);
+      padding: 0.25rem;
+      box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+    }
+
+    & option {
+      min-height: 2.75rem;
+      border-radius: 0.5rem;
+      padding-inline: 0.75rem;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    & option::checkmark {
+      display: none;
+    }
+
+    /* A phone's last tap would otherwise stay highlighted. */
+    @media (hover: hover) {
+      & option:hover {
+        background-color: var(--muted);
+      }
+    }
+
+    /* The ring, because --muted alone is too faint on --card to find while arrowing. */
+    & option:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
+      background-color: var(--muted);
+    }
+
+    & option:checked {
+      font-weight: 600;
+      color: var(--primary);
+    }
+  }
+}
+
 /* inline: each utility reads the token where it's used, not a copy resolved at :root, so
    an element that redefines a token gets its own value. */
 @theme inline {

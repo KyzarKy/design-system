@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0
+
+`Select`, `Table`, and a roomier `PageHeader` on wide screens
+([ADR 0006](docs/decisions/0006-select-table-wide-header.md)).
+
+- **`Select`** is a native `<select>` with room for its caret. Where the browser supports
+  `appearance: base-select`, its open list is styled too: rounded, with no gap around the
+  highlighted option.
+- **`Table` and `TableAction`:** every cell has the same horizontal padding, so columns line
+  up and the last one stays inside the table. `TableAction` is a row's button, with a hover
+  that fills its cell instead of being clipped.
+- **Changed: `PageHeader` from 1024px up.** The actions sit at the right of the title and
+  description, and the title is `text-3xl`. To upgrade, check that your actions fit there.
+
 ## 0.5.2
 
 - **Fixed: buttons show the pointer cursor,** from `theme.css`, for every enabled

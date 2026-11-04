@@ -126,6 +126,11 @@ import { Button, Card, SegmentedControl } from "@kyzarky/ui";
   `button` unless you pass `submit`. It also takes every native button prop.
 - **`PageHeader`** is the top of a page: `title` (its only `h1`), an optional one-sentence
   `description` (a string), and optional `actions`, such as a `Link`.
+- **`Select`** is a native `<select>` for one choice from a list (`multiple` and `size` aren't styled). Name it with a
+  `<label htmlFor>`.
+- **`Table`** takes plain `<thead>`, `<tr>`, `<th>`, and `<td>`, and an optional `caption`. Use
+  `text-right tabular-nums` on number columns. **`TableAction`** is the button for a row that
+  opens something, in the row's first cell.
 - **`SegmentedControl`** picks one option from a few. It's a group of radio buttons
   underneath, so arrow keys move between options. `label` names the group for screen
   readers and isn't shown.
@@ -149,8 +154,9 @@ added after the component's own classes, not merged with them, so don't use it t
   `Button`, and looks like one.
 - **A page starts with a `PageHeader`:** the title, a one-sentence description at body
   size in `muted-foreground`, and the page's own links or actions, never inside the
-  description's sentence. Below 640px the actions sit beside the title; from 640px up they
-  have a row of their own. Each action is at least 24px tall. 6px between the parts, and
+  description's sentence. Below 640px the actions sit beside the title; from 640px they have
+  a row of their own; from 1024px they sit at the right of the title and description, so the
+  page below moves up. Each action is at least 24px tall. 6px between the parts, and
   at least twice that (12px) between the header and the page below it.
 - **A button never sits inside a paragraph.** A `<p>` holds text and inline links. A
   button goes on its own row, after the text it follows.
@@ -176,6 +182,8 @@ added after the component's own classes, not merged with them, so don't use it t
   a second app needs them, because they come with rules.
 - **[ADR 0005](docs/decisions/0005-page-header.md), accepted:** `PageHeader`, for the same
   reason.
+- **[ADR 0006](docs/decisions/0006-select-table-wide-header.md), proposed:** `Select`, `Table`,
+  and `PageHeader` on wide screens.
 
 ## Development
 
