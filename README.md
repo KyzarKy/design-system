@@ -192,7 +192,7 @@ added after the component's own classes, not merged with them, so don't use it t
   reason.
 - **[ADR 0006](docs/decisions/0006-select-table-wide-header.md), proposed:** `Select`, `Table`,
   and `PageHeader` on wide screens.
-- **[ADR 0007](docs/decisions/0007-combobox-and-bird-behaviors-pieces.md), proposed:**
+- **[ADR 0007](docs/decisions/0007-combobox-and-bird-behaviors-pieces.md), accepted:**
   `Combobox`, and `Input`, `Checkbox`, `NavLink`, and `Tag` from Bird Behaviors.
 
 ## Development

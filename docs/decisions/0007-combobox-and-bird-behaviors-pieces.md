@@ -1,6 +1,6 @@
 # ADR 0007: Combobox, and the pieces Bird Behaviors had kept to itself
 
-**Status:** proposed, 2026-11-20. Accepted when the pull request merges. Ky asked for a way to
+**Status:** accepted, 2026-11-20, when #9 merged. Ky asked for a way to
 type to find a bird on a phone, built here, and for Bird Behaviors' other hand-written pieces to
 move here at the same time.
 
