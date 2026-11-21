@@ -190,7 +190,7 @@ added after the component's own classes, not merged with them, so don't use it t
   a second app needs them, because they come with rules.
 - **[ADR 0005](docs/decisions/0005-page-header.md), accepted:** `PageHeader`, for the same
   reason.
-- **[ADR 0006](docs/decisions/0006-select-table-wide-header.md), proposed:** `Select`, `Table`,
+- **[ADR 0006](docs/decisions/0006-select-table-wide-header.md), accepted:** `Select`, `Table`,
   and `PageHeader` on wide screens.
 - **[ADR 0007](docs/decisions/0007-combobox-and-bird-behaviors-pieces.md), accepted:**
   `Combobox`, and `Input`, `Checkbox`, `NavLink`, and `Tag` from Bird Behaviors.

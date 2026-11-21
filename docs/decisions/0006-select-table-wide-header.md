@@ -1,7 +1,7 @@
 # ADR 0006: Select, Table, and PageHeader on wide screens
 
-**Status:** proposed, 2026-11-03. Ky reported the problems from the transit pipeline's editor,
-and asked for them to be fixed here first. It's accepted when the pull request merges.
+**Status:** accepted, 2026-11-03, when #8 merged. Ky reported the problems from the transit
+pipeline's editor, and asked for them to be fixed here first.
 
 ## Context
 
