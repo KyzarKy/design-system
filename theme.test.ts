@@ -98,7 +98,8 @@ describe("contrast", () => {
     },
   );
 
-  test.each(MODES.flatMap((mode) => STATUS.map((status) => ({ mode, status }))))(
+  // Tag's tones.
+  test.each(MODES.flatMap((mode) => ["primary", ...STATUS].map((status) => ({ mode, status }))))(
     "$status badge ($status/15 on card), $mode: at least 4.5:1",
     ({ mode, status }) => {
       const badge = over(color(status, mode), 0.15, color("card", mode));

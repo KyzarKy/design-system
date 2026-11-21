@@ -128,6 +128,14 @@ import { Button, Card, SegmentedControl } from "@kyzarky/ui";
   `description` (a string), and optional `actions`, such as a `Link`.
 - **`Select`** is a native `<select>` for one choice from a list (`multiple` and `size` aren't styled). Name it with a
   `<label htmlFor>`.
+- **`Combobox`** is for one choice from a list too long to scroll: typing narrows it. It takes
+  `options` (`value`, `label`, and optional `group` and `keywords`), `value`, and `onChange`.
+  Name it with a `<label htmlFor>` or `aria-label`.
+- **`Input`** is a text box with `Select`'s look, and takes every native input prop.
+- **`Checkbox`** is a checkbox with its `label`, and takes every native checkbox prop.
+- **`NavLink`** is one row of a navigation list. `current` marks the page you're on.
+- **`Tag`** is a short label in a pill; `tone` is `primary`, `success`, `warning`, or
+  `destructive`.
 - **`Table`** takes plain `<thead>`, `<tr>`, `<th>`, and `<td>`, and an optional `caption`. Use
   `text-right tabular-nums` on number columns. **`TableAction`** is the button for a row that
   opens something, in the row's first cell.
@@ -184,6 +192,8 @@ added after the component's own classes, not merged with them, so don't use it t
   reason.
 - **[ADR 0006](docs/decisions/0006-select-table-wide-header.md), proposed:** `Select`, `Table`,
   and `PageHeader` on wide screens.
+- **[ADR 0007](docs/decisions/0007-combobox-and-bird-behaviors-pieces.md), proposed:**
+  `Combobox`, and `Input`, `Checkbox`, `NavLink`, and `Tag` from Bird Behaviors.
 
 ## Development
 

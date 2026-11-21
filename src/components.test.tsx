@@ -7,21 +7,70 @@ import { compile } from "@tailwindcss/node";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
+import { fold } from "./Combobox.js";
 import * as ui from "./index.js";
 import {
   Button,
   Card,
+  Checkbox,
+  Combobox,
+  Input,
   Link,
   List,
   ListRow,
   Meter,
   Modal,
+  NavLink,
   PageHeader,
   SegmentedControl,
   Select,
   Table,
   TableAction,
+  Tag,
 } from "./index.js";
+
+const BIRDS = [
+  { value: "cago", label: "Canada Goose", group: "Common", keywords: "Branta canadensis" },
+  { value: "cack", label: "Cackling Goose", group: "Common", keywords: "Branta hutchinsii" },
+  { value: "coha", label: "Cooper's Hawk", group: "Rare" },
+];
+const COMBOBOX = <Combobox id="bird" options={BIRDS} value="cack" onChange={() => {}} />;
+
+test.each([
+  ["Cooper's Hawk", "coopers hawk"],
+  ["  Black-capped  Chickadee ", "black capped chickadee"],
+  ["Cooper’s", "coopers"],
+])("fold(%j) is %j", (text, folded) => {
+  expect(fold(text)).toBe(folded);
+});
+
+test("Combobox is a closed combobox showing the chosen label, with its options grouped", () => {
+  const html = renderToStaticMarkup(COMBOBOX);
+  expect(html).toContain('role="combobox"');
+  expect(html).toContain('aria-expanded="false"');
+  expect(html).toContain('value="Cackling Goose"');
+  expect(html).toMatch(/<div hidden="" [^>]*><div [^>]*role="listbox"/);
+  expect(html.match(/role="group"/g)).toHaveLength(2);
+  expect(html.match(/role="option"/g)).toHaveLength(3);
+  expect(html).toMatch(/aria-selected="true"[^>]*>Cackling Goose</);
+  expect(html).not.toContain("No matches");
+});
+
+test("Checkbox is a native checkbox inside its label", () => {
+  const html = renderToStaticMarkup(<Checkbox label="Auto" defaultChecked />);
+  expect(html).toMatch(/^<label [^>]*><input type="checkbox" [^>]*checked=""\/>Auto<\/label>$/);
+});
+
+test("NavLink marks only the current row as the current page", () => {
+  expect(renderToStaticMarkup(<NavLink href="#a">A</NavLink>)).not.toContain("aria-current");
+  expect(
+    renderToStaticMarkup(
+      <NavLink href="#a" current>
+        A
+      </NavLink>,
+    ),
+  ).toContain('aria-current="page"');
+});
 
 test.each([
   [0.42, "42%"],
@@ -229,6 +278,25 @@ const SAMPLES: Record<string, ReactNode> = {
     />
   ),
   Select: <Select />,
+  Checkbox: <Checkbox label="Label" />,
+  Combobox: COMBOBOX,
+  Input: <Input />,
+  NavLink: (
+    <>
+      <NavLink href="#a">A</NavLink>
+      <NavLink href="#b" current>
+        B
+      </NavLink>
+    </>
+  ),
+  Tag: (
+    <>
+      <Tag>Primary</Tag>
+      <Tag tone="success">Success</Tag>
+      <Tag tone="warning">Warning</Tag>
+      <Tag tone="destructive">Destructive</Tag>
+    </>
+  ),
   Table: <Table caption="Caption" />,
   TableAction: <TableAction />,
 };

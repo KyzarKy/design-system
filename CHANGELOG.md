@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.7.0
+
+`Combobox`, and four pieces from Bird Behaviors
+([ADR 0007](docs/decisions/0007-combobox-and-bird-behaviors-pieces.md)). No existing
+component's API changes.
+
+- **`Combobox`** picks one option from a long list by typing: the list narrows to the options
+  whose label or `keywords` contain what's typed. Options can be grouped.
+- **`Input`** is a text box with `Select`'s look.
+- **`Checkbox`** is a checkbox and its label, 44px tall.
+- **`NavLink`** is a row of a navigation list, with `current` for the page you're on.
+- **`Tag`** is a short label in a pill, in `primary`, `success`, `warning`, or `destructive`.
+- **`theme.css`:** a `ui-input` utility, which `ui-select` now builds on. Selects look the
+  same.
+
 ## 0.6.0
 
 `Select`, `Table`, and a roomier `PageHeader` on wide screens
